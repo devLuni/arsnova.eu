@@ -1,0 +1,19 @@
+Baseline v1.3.0; Auszug aus dem lokalen Vitest-Lauf:
+ ✓ src/lib/moderationPromptContextPacking.test.ts (22 tests) 3948ms
+ ✓ src/lib/openWeightLlmClient.test.ts (47 tests) 153ms
+ ✓ src/lib/qaSummaryQueue.test.ts (12 tests) 261ms
+ ✓ src/lib/moderationSummaryContext.test.ts (9 tests) 63ms
+ Test Files  4 passed (4)
+      Tests  90 passed (90)
+
+GPU-Protokoll, abschließender Versuch:
+0.00.664.343 I llama_prepare_model_devices: using device ROCm0 (AMD Radeon RX 9070 XT) (0000:2f:00.0) - 14965 MiB free
+0.00.828.562 I load_tensors: offloaded 37/37 layers to GPU
+0.00.828.565 I load_tensors:        ROCm0 model buffer size =  2375.91 MiB
+0.04.125.232 I llama_kv_cache:      ROCm0 KV buffer size =  1152.00 MiB
+0.04.150.677 I sched_reserve:      ROCm0 compute buffer size =    20.75 MiB
+
+Docker-Image-ID: sha256:c66e63f53dc546974dbeeca01a025d53eb24aaa35dc0fb405d596f3d5a36ab79
+
+Erster Startversuch (vor der Inferenz), unveränderte Fehlermeldung:
+/gpu/llama.cpp/build/bin/llama-server: error while loading shared libraries: libllama-server-impl.so: cannot open shared object file: No such file or directory
