@@ -10,7 +10,7 @@ sdk=arsnova-wsl-gpu-sdk:7.14.1
 node_image=node:24-bookworm-slim@sha256:8cabefbd444809cf0e319b5831c65da1ea202200ca552a5e75fd7938a6f86658
 mkdir -p "$src" "$out"
 common=(--rm --user "$(id -u):$(id -g)" --cpus 4 --memory 8g --memory-swap 8g --pids-limit 256 --cap-drop ALL --security-opt no-new-privileges)
-mounts=(-v "$src:/release" -v "$study/bridge.test.ts:/release/apps/backend/src/lib/topic2c.experiment.test.ts:ro" -v "$out:/evidence" -e EVIDENCE=/evidence -w /release/apps/backend)
+mounts=(-v "$src:/release" -v "$study/qa-kurzfassung-tokenbudget.test.ts:/release/apps/backend/src/lib/topic2c.experiment.test.ts:ro" -v "$out:/evidence" -e EVIDENCE=/evidence -w /release/apps/backend)
 case "${1:-}" in
  setup)
   if [[ -e "$src/package.json" ]]; then echo 'Use a fresh scratch directory for setup.' >&2; exit 2; fi
@@ -21,8 +21,8 @@ case "${1:-}" in
  measure)
   [[ ! -e "$out/environment.json" ]] || { echo 'Use a new OUT; previous measurements are never overwritten.' >&2; exit 2; }
   [[ -c /dev/dxg && -x "$src/.study-node/node" ]] || { echo 'Need local WSL GPU and successful pack.' >&2; exit 2; }
-  cp "$study/bridge.test.ts" "$out/measured-bridge.ts"
+  cp "$study/qa-kurzfassung-tokenbudget.test.ts" "$out/"
   docker image inspect --format '{{.Id}}' "$sdk" > "$out/image-id.txt"
-  docker run "${common[@]}" --network none --device /dev/dxg "${mounts[@]}" -v /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so:ro -v "$repo/tmp/wsl-gpu-validation:/gpu:ro" -v "$study/start.py:/study/start.py:ro" "$sdk" timeout -k 10 870 python3 /study/start.py ;;
- *) echo 'Usage: run.sh setup|pack|measure' >&2; exit 2 ;;
+  docker run "${common[@]}" --network none --device /dev/dxg "${mounts[@]}" -v /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so:ro -v "$repo/tmp/wsl-gpu-validation:/gpu:ro" -v "$study/qwen-testserver.py:/study/qwen-testserver.py:ro" "$sdk" timeout -k 10 870 python3 /study/qwen-testserver.py ;;
+ *) echo 'Usage: qa-tests-ausfuehren.sh setup|pack|measure' >&2; exit 2 ;;
 esac

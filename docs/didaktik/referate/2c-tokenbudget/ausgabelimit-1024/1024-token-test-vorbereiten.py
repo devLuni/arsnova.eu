@@ -9,13 +9,13 @@ study = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("destination", type=Path, help="New directory under the repository's tmp/")
 dest = parser.parse_args().destination
-for line in (study / "evidence/SHA256SUMS").read_text().splitlines():
+for line in (study / "messdaten-640/SHA256SUMS").read_text().splitlines():
     checksum, name = line.split(maxsplit=1)
     if hashlib.sha256((study / name).read_bytes()).hexdigest() != checksum:
         raise ValueError(f"Changed baseline artifact: {name}")
 records = {
     row["file"]: row["data"]
-    for row in map(json.loads, (study / "evidence/records.jsonl").read_text().splitlines())
+    for row in map(json.loads, (study / "messdaten-640/messarchiv.jsonl").read_text().splitlines())
 }
 payloads = {}
 for size in (6, 100):
@@ -36,12 +36,12 @@ if bridge.count(declarations) != 1:
     raise ValueError("Cannot locate the declarations in the archived bridge")
 frozen = json.dumps(payloads, ensure_ascii=False, separators=(",", ":"))
 bridge = bridge.replace(declarations, f"const frozen:Record<string,any>={frozen};\n{declarations}")
-startup = (study / "start.py").read_text()
+startup = (study / "qwen-testserver.py").read_text()
 limit = "'--n-predict','640'"
 if startup.count(limit) != 1:
     raise ValueError("Cannot identify the original server ceiling")
 
 dest.mkdir(parents=True, exist_ok=False)
-(dest / "bridge.test.ts").write_text(bridge)
-(dest / "start.py").write_text(startup.replace(limit, "'--n-predict','1024'"))
-copyfile(study / "run.sh", dest / "run.sh")
+(dest / "qa-kurzfassung-tokenbudget.test.ts").write_text(bridge)
+(dest / "qwen-testserver.py").write_text(startup.replace(limit, "'--n-predict','1024'"))
+copyfile(study / "qa-tests-ausfuehren.sh", dest / "qa-tests-ausfuehren.sh")

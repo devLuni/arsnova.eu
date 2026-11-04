@@ -89,10 +89,10 @@ def paired(first, second, request):
 def main():
     here = Path(__file__).resolve().parent
     cli = argparse.ArgumentParser(description=__doc__)
-    cli.add_argument("--archive", type=Path, default=here / "records.jsonl")
+    cli.add_argument("--archive", type=Path, default=here / "messarchiv.jsonl")
     cli.add_argument("--pairs", type=Path, help="Write CSV with all 20 scored pairs")
     args = cli.parse_args()
-    old, new = load(here.parent / "evidence/records.jsonl"), load(args.archive)
+    old, new = load(here.parent / "messdaten-640/messarchiv.jsonl"), load(args.archive)
     rows = []
     for k in check_inputs(old, new):
         run = new[k]

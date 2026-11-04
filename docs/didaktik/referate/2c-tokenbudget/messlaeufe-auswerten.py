@@ -21,17 +21,23 @@ def read_json(p):
 
 def main():
     cli=argparse.ArgumentParser(description=__doc__)
-    cli.add_argument('--runs',type=Path,help='Local completed output directory; omit to verify archived evidence')
-    cli.add_argument('--out',type=Path,default=Path(__file__).parent/'evidence')
-    args=cli.parse_args(); dest=args.out;dest.mkdir(parents=True,exist_ok=True); archive=dest/'records.jsonl'
+    cli.add_argument('--runs',type=Path,help='Local completed output directory; omit to verify archived messdaten-640')
+    cli.add_argument('--out',type=Path,default=Path(__file__).parent/'messdaten-640')
+    args=cli.parse_args(); dest=args.out;dest.mkdir(parents=True,exist_ok=True); archive=dest/'messarchiv.jsonl'
     if args.runs:
         files=sorted(args.runs.glob('*.json'))
         records={p.name:read_json(p) for p in files}
-        records['measured-bridge.ts']=(args.runs/'measured-bridge.ts').read_text()
+        test_source = args.runs / 'qa-kurzfassung-tokenbudget.test.ts'
+        if not test_source.is_file():
+            test_source = args.runs / 'measured-bridge.ts'
+        # Preserve the historical archive key and the recorded container path for digest checks.
+        records['measured-bridge.ts']=test_source.read_text()
         assert sha(records['measured-bridge.ts'])==records['environment.json']['sources']['apps/backend/src/lib/topic2c.experiment.test.ts']
         archive.write_text(''.join(compact({'file':f,'data':x})+'\n' for f,x in records.items()))
     else:
-        source = archive if archive.is_file() else Path(__file__).parent / 'evidence/records.jsonl'
+        source = archive if archive.is_file() else dest / 'records.jsonl'
+        if not source.is_file():
+            source = Path(__file__).parent / 'messdaten-640/messarchiv.jsonl'
         records={r['file']:r['data'] for r in map(json.loads,source.read_text().splitlines())}
     rows=[]; ratings=[]; unique={}
     for r in sorted((x for f,x in records.items() if re.fullmatch(r'[PR]\d+-S\d+-[AB]\.json',f)),key=lambda x:x['stamp']):
@@ -59,16 +65,16 @@ def main():
         if rep:
             direct_score = 2 if elems and direct == len(elems) else int(bool(elems) and direct * 2 >= len(elems))
             ratings.append({'run': r['id'], 'visible_sha': digest, 'D1': direct_score})
-    csvfile(dest/'runs.csv',rows)
-    coding=read_json(Path(__file__).parent/'coding.json')
+    csvfile(dest/'einzelmessungen.csv',rows)
+    coding=read_json(Path(__file__).parent/'rubrikbewertungen-pro-ausgabe.json')
     provisional=[]
     for row in ratings:
         mark=coding.get(row['visible_sha'],{})
         dims={d:mark.get(d) for d in ('D2','D3','D4','D5')}
         total=row['D1']+sum(dims.values()) if None not in dims.values() else None
         provisional.append(dict(run=row['run'],visible_sha=row['visible_sha'],D1=row['D1'],**dims,total=total,reason=mark.get('reason','Neue Ausgabe: manuell bewerten')))
-    csvfile(dest/'ratings.csv',provisional)
-    (dest/'visible.json').write_text(json.dumps(unique,ensure_ascii=False,indent=2)+'\n')
+    csvfile(dest/'rubrikpunkte-pro-lauf.csv',provisional)
+    (dest/'sichtbare-ausgaben.json').write_text(json.dumps(unique,ensure_ascii=False,indent=2)+'\n')
     scored=[r for r in rows if r['rep']]
     assert len(scored)==20 and len(rows)==22 and len({r['id'] for r in rows})==22
     groups=[]; pairs=[]
@@ -84,7 +90,7 @@ def main():
                 pair={r['arm']:r[key] for r in scored if r['n']==n and r['rep']==rep}
                 if None not in pair.values(): diffs.append(pair['A']-pair['B'])
             pairs.append({'n':n,'metric':key,'A_minus_B_min_median_max_ms':median_range(diffs)})
-    (dest/'summary.json').write_text(json.dumps({'groups':groups,'paired':pairs,'all_zero_cache':all(r['cached']==0 for r in rows),'visibleForms':len(unique),'rawForms':len({r['raw_sha'] for r in scored}),'raw_valid_json':sum(r['raw_json'] for r in scored),'fallbacks':sum(r['mode']=='extractive' for r in scored)},indent=2)+'\n')
+    (dest/'messwertuebersicht.json').write_text(json.dumps({'groups':groups,'paired':pairs,'all_zero_cache':all(r['cached']==0 for r in rows),'visibleForms':len(unique),'rawForms':len({r['raw_sha'] for r in scored}),'raw_valid_json':sum(r['raw_json'] for r in scored),'fallbacks':sum(r['mode']=='extractive' for r in scored)},indent=2)+'\n')
     print(len(rows),'archived runs (2 pilot, 20 measured);',len(unique),'distinct bound contents')
 
 if __name__=='__main__':

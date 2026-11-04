@@ -2,6 +2,8 @@
 
 Die Tests schicken synthetische Fragen an das lokale Modell Qwen und prüfen, welche Kurzfassung das arsnova-Backend für die Lehrperson zurückgibt. Zwei Dinge werden getrennt variiert: welche Informationen Qwen erhält und wie lang seine Antwort werden darf. Die Messwerte stehen in den [Testergebnissen](test_results.md).
 
+Der eigentliche Test steht in [qa-kurzfassung-tokenbudget.test.ts](qa-kurzfassung-tokenbudget.test.ts). Zum Ausführen im WSL-Terminal dient [qa-tests-ausfuehren.sh](qa-tests-ausfuehren.sh). Die Startbefehle stehen weiter unten.
+
 ## Was bekommt Qwen zu sehen?
 
 1. **Testdaten.** S6 enthält sechs Fragen aus dem Referenzdatensatz von arsnova. S100 ergänzt 94 künstliche Fragen zu denselben drei Anliegen (Regression üben, Prüfungsstoff klären, Anwesenheit klären).
@@ -24,13 +26,13 @@ Je Serie laufen zwei Aufwärmanfragen und anschließend 20 gewertete Anfragen (v
 Im Verzeichnis dieser README ausführen. Python ab 3.11 genügt. Die Befehle berechnen die Tabellen in einem temporären Verzeichnis neu. Wenn die Werte mit den gespeicherten Ergebnissen übereinstimmen, geben die beiden Vergleiche nichts aus.
 
 ```bash
-sha256sum -c evidence/SHA256SUMS
+sha256sum -c messdaten-640/SHA256SUMS
 (cd ausgabelimit-1024 && sha256sum -c SHA256SUMS)
 pruefung=$(mktemp -d)
-python3 evaluate.py --out "$pruefung/640"
-diff -u evidence/runs.csv "$pruefung/640/runs.csv"
-python3 ausgabelimit-1024/compare.py --pairs "$pruefung/paare.csv"
-diff -u ausgabelimit-1024/paare.csv "$pruefung/paare.csv"
+python3 messlaeufe-auswerten.py --out "$pruefung/640"
+diff -u messdaten-640/einzelmessungen.csv "$pruefung/640/einzelmessungen.csv"
+python3 ausgabelimit-1024/ausgabelimits-vergleichen.py --pairs "$pruefung/laufpaare-640-1024.csv"
+diff -u ausgabelimit-1024/laufpaare-640-1024.csv "$pruefung/laufpaare-640-1024.csv"
 ```
 
 ## Tests auf der GPU wiederholen
@@ -48,26 +50,26 @@ if [[ -x "$PWD/tmp/topic2c/release/.study-node/node" ]]; then
   export TOPIC2C_SCRATCH="$PWD/tmp/topic2c"
 else
   export TOPIC2C_SCRATCH="$work/quelle"
-  bash "$study/run.sh" setup
-  bash "$study/run.sh" pack
+  bash "$study/qa-tests-ausfuehren.sh" setup
+  bash "$study/qa-tests-ausfuehren.sh" pack
 fi
 ```
 
-**2. Hauptversuch starten.** Die [Testdatei](bridge.test.ts) baut die Eingaben auf und ruft den Release-Adapter auf. Der [Runner](run.sh) startet den lokalen Modellserver ohne externes Netz. Einzelne Antworten stehen unter `$OUT`, z. B. in `R1-S6-A.json`. `rawContent` enthält den ursprünglichen Modelltext, `bound` das geprüfte Backend-Ergebnis.
+**2. Hauptversuch starten.** Die [Testdatei](qa-kurzfassung-tokenbudget.test.ts) baut die Eingaben auf und ruft den Release-Adapter auf. Der [Runner](qa-tests-ausfuehren.sh) startet den lokalen Modellserver ohne externes Netz. Einzelne Antworten stehen unter `$OUT`, z. B. in `R1-S6-A.json`. `rawContent` enthält den ursprünglichen Modelltext, `bound` das geprüfte Backend-Ergebnis.
 
 ```bash
-bash "$study/run.sh" measure
-python3 "$study/evaluate.py" --runs "$OUT" --out "$work/auswertung-640"
+bash "$study/qa-tests-ausfuehren.sh" measure
+python3 "$study/messlaeufe-auswerten.py" --runs "$OUT" --out "$work/auswertung-640"
 ```
 
-**3. Folgeversuch starten.** Das [Vorbereitungsskript](ausgabelimit-1024/prepare.py) erzeugt die Testdatei aus den archivierten Anfragen des dokumentierten 640er-Laufs. Der [Paarvergleich](ausgabelimit-1024/compare.py) vergleicht mit dieser festen Referenz. Nach Schritt 1 kann der Folgeversuch auch einzeln laufen.
+**3. Folgeversuch starten.** Das [Vorbereitungsskript](ausgabelimit-1024/1024-token-test-vorbereiten.py) erzeugt die Testdatei aus den archivierten Anfragen des dokumentierten 640er-Laufs. Der [Paarvergleich](ausgabelimit-1024/ausgabelimits-vergleichen.py) vergleicht mit dieser festen Referenz. Nach Schritt 1 kann der Folgeversuch auch einzeln laufen.
 
 ```bash
 export OUT="$work/1024"
-python3 "$study/ausgabelimit-1024/prepare.py" "$work/harness"
-bash "$work/harness/run.sh" measure
-python3 "$study/evaluate.py" --runs "$OUT" --out "$work/auswertung-1024"
-python3 "$study/ausgabelimit-1024/compare.py" --archive "$work/auswertung-1024/records.jsonl" --pairs "$work/paare.csv"
+python3 "$study/ausgabelimit-1024/1024-token-test-vorbereiten.py" "$work/harness"
+bash "$work/harness/qa-tests-ausfuehren.sh" measure
+python3 "$study/messlaeufe-auswerten.py" --runs "$OUT" --out "$work/auswertung-1024"
+python3 "$study/ausgabelimit-1024/ausgabelimits-vergleichen.py" --archive "$work/auswertung-1024/messarchiv.jsonl" --pairs "$work/laufpaare-640-1024.csv"
 ```
 
 ## Bezug zu 2A
