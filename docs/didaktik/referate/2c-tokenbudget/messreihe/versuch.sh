@@ -8,7 +8,7 @@ src="$scratch/release"
 image=node:24-bookworm-slim@sha256:8cabefbd444809cf0e319b5831c65da1ea202200ca552a5e75fd7938a6f86658
 sdk=sha256:c66e63f53dc546974dbeeca01a025d53eb24aaa35dc0fb405d596f3d5a36ab79
 common=(--rm --user "$(id -u):$(id -g)" --cpus 4 --memory 8g --memory-swap 8g --pids-limit 256 --cap-drop ALL --security-opt no-new-privileges)
-mounts=(-v "$src:/release" -v "$here:/study:ro" -v "$here/../messdaten-640:/historisch:ro" -v "$here/qa-stichtag.test.ts:/release/apps/backend/src/lib/topic2c.experiment.test.ts:ro" -w /release/apps/backend)
+mounts=(-v "$src:/release" -v "$here:/study:ro" -v "$here/qa-kurzfassung.test.ts:/release/apps/backend/src/lib/topic2c.experiment.test.ts:ro" -w /release/apps/backend)
 mkdir -p "$scratch"
 case ${1:-} in
  setup)

@@ -1,16 +1,6 @@
 # Ergebnisse · Quellenbelege mit bekannten Fehlern
 
-## Oktober-Baseline · direkte Quellenbindung
-
-| Fall                                            | Ausgabe                                                                                   |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
-| Nur unbekannte ID (`unknown`)                   | Aussage entfernt, Status `uncertain`.                                                     |
-| Bekannte und unbekannte ID (`mixed`)            | Aussage behalten, unbekannte ID entfernt.                                                 |
-| Falsche Aussage, bekannte ID (`false-semantic`) | »Alle 200 Studierenden haben die Regression verstanden.« bleibt erhalten, Status `ready`. |
-
-Beide Oktober-Archive enthalten diese drei Kontrollausgaben wortgleich unter `controls.json`. [Archiv 640](../../messdaten-640/messarchiv.jsonl) · [Archiv 1.024](../../ausgabelimit-1024/messarchiv.jsonl)
-
-## November-Baseline · gesamter Validierungspfad
+## Validierung am 8. November 2026
 
 | Eingespeister Fall                                                     | Backend-Entscheidung       |
 | ---------------------------------------------------------------------- | -------------------------- |
@@ -25,4 +15,4 @@ Beide Oktober-Archive enthalten diese drei Kontrollausgaben wortgleich unter `co
 | Geteilte Stimmen als Gleichgültigkeit gedeutet (`stimmen-fehldeutung`) | Falschaussage angenommen.  |
 | Nur eine Aussage (`nur-ein-anliegen`)                                  | Extraktiver Ersatz.        |
 
-Alle zehn Endergebnisse erhielten den Status `ready`, darunter die vier Ersatzantworten. Der gemeinsame Fall mit gemischten IDs zeigt den Unterschied der Testgrenzen: Im Oktober wurde nur die letzte Quellenbindung aufgerufen. Im November konnte bereits der Adapter die ganze Antwort durch einen Ersatz ersetzen. Die fünf angenommenen fachlichen Fehler zeigen, was die Prüfung durchlässt. Ihre Anzahl ist keine Fehlerrate von Qwen. [Vollständige Eingaben und Entscheidungen](../../extended_experiments/kontrollantworten.json) · [Audit der 56 archivierten Modellaufrufe](../../extended_experiments/pruefstufen.json) · [Anleitung](anleitung.md)
+Alle zehn Endergebnisse erhielten den Status `ready`, darunter die vier Ersatzantworten. Die fünf angenommenen fachlichen Fehler zeigen, welche Aussagen der Filter durchlässt. Ihre Anzahl ist keine Fehlerrate von Qwen. [Alle zehn Eingaben und Entscheidungen](../../extended_experiments/kontrollantworten.json) · [Audit der 56 archivierten Aufrufe](../../extended_experiments/pruefstufen.json) · [Anleitung](anleitung.md)

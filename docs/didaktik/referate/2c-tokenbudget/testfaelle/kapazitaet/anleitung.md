@@ -1,13 +1,15 @@
-# Wie viele Fragetexte passen in die Eingabe?
+# Wie viele Fragen erreichen Qwen?
 
-Der Oktober-Test packt S6 und S100 einmal mit dem Release-Profil (4.096 Token) und einmal mit dem Studienprofil (8.192 Token). Anschließend berechnet er für dieselbe Reihenfolge, wie viele kompakte Texte mit ID in 7.424 Eingabeeinheiten passen würden. Das Backend schätzt konservativ anhand der UTF-8-Bytes. Für die zusätzlich passenden Texte wird kein Modell aufgerufen.
+Das Ausgangsmaterial kann mehr Fragen enthalten, als arsnova für die Kurzfassung auswählt. Diese Auswertung verwendet die bereits gespeicherten Eingaben der beiden Hauptversuche.
 
-Die Befehle laufen aus dem Studienverzeichnis nach der [gemeinsamen Einrichtung](../../README.md#messungen-wiederholen). Die Kapazitätsrechnung läuft im Packschritt der Oktober-Einrichtung. Für eine eigene Ausgabe:
+1. Die Fragen im Ausgangsdatensatz zählen.
+2. Die übergebenen Quellen-IDs im gepackten Kontext und in der Textvariante abgleichen.
+3. Ausgewählte, ausgelassene und gekürzte Quellen je Datensatz zählen. Die beiden Ausgabelimits nutzen dieselbe Quellenauswahl.
+
+Der Packschritt lässt sich nach der [Einrichtung](../../README.md#messungen-wiederholen) ohne Modellaufruf wiederholen:
 
 ```bash
-OUT="$arbeit/kapazitaet" bash qa-tests-ausfuehren.sh pack
+bash messreihe/versuch.sh pack 640
 ```
 
-[Testcode](../../qa-kurzfassung-tokenbudget.test.ts) · [Roharchiv mit capacity.json](../../messdaten-640/messarchiv.jsonl)
-
-[Alle Ergebnisse dieses Testfalls](ergebnisse.md) · [Übersicht und Einrichtung](../../README.md)
+[Testcode](../../messreihe/qa-kurzfassung.test.ts) · [Auswertung](../../messreihe/auswerten.py) · [Ergebnisse](ergebnisse.md)

@@ -1,13 +1,13 @@
-# GPU-Kompatibilität unter WSL prüfen
+# GPU und Modellserver unter WSL einrichten
 
-Zuerst vergleicht ein kleines HIP-Programm 262.144 Rechenergebnisse auf der GPU mit einer CPU-Referenz. Dann erhält der lokale Modellserver drei synthetische Fragen. Die Antwort muss gültiges JSON mit passenden Quellen-IDs sein. Außerdem muss das Serverprotokoll bestätigen, wie viele Modellschichten auf der GPU liefen. Die folgenden Befehle beginnen im Stammverzeichnis des Worktrees. [HIP-Test](../../../../../../scripts/experiments/wsl-gpu/hip-smoke.cpp) · [Modelltest](../../../../../../scripts/experiments/wsl-gpu/run-inference.py) · [Ergebnisse beider Modellläufe](ergebnisse.md)
+Zuerst vergleicht ein kleines HIP-Programm 262.144 Rechenergebnisse auf der GPU mit einer CPU-Referenz. Dann erhält der lokale Modellserver drei synthetische Fragen. Die Antwort muss gültiges JSON mit passenden Quellen-IDs sein. Außerdem muss das Serverprotokoll bestätigen, wie viele Modellschichten auf der GPU liefen. Die folgenden Befehle beginnen im Stammverzeichnis des Worktrees. [HIP-Test](../../../../scripts/experiments/wsl-gpu/hip-smoke.cpp) · [Modelltest](../../../../scripts/experiments/wsl-gpu/run-inference.py)
 
-## Getestete Umgebung
+## Voraussetzungen
 
 - AMD Radeon RX 9070 XT mit 16 GB Grafikspeicher (`gfx1201`), 32 GB Arbeitsspeicher.
 - Windows 26H2, Build 26300.9711, vorhandener Treiber `32.0.31041.1004`. Ubuntu 26.04.1 unter WSL 2, Kernel `6.18.54.1-microsoft-standard-WSL2`.
 - Linux-Container mit Docker Desktop 29.8.2, ROCm 7.14.1 und ROCDXG 1.2.1. Die GPU ist in WSL als `/dev/dxg` erreichbar.
-- llama.cpp `b10524`, Qwen3-4B-Instruct-2507 Q4_K_M. Modellrevision, Dateigröße und SHA-256 stehen im [Modellmanifest](../../../../../../docker/open-weight-llm/model-manifest.json).
+- llama.cpp `b10524`, Qwen3-4B-Instruct-2507 Q4_K_M. Modellrevision, Dateigröße und SHA-256 stehen im [Modellmanifest](../../../../docker/open-weight-llm/model-manifest.json).
 
 ## Kompatibilitätstest wiederholen
 
@@ -15,7 +15,7 @@ Alle Befehle im WSL-Terminal aus dem Projektstamm ausführen. Auf dem eingericht
 
 ### 1. Linux-Umgebung einrichten
 
-Das [Dockerfile](../../../../../../scripts/experiments/wsl-gpu/Dockerfile) installiert den ROCm-Compiler und die für diese GPU benötigten Bibliotheken im Testcontainer.
+Das [Dockerfile](../../../../scripts/experiments/wsl-gpu/Dockerfile) installiert den ROCm-Compiler und die für diese GPU benötigten Bibliotheken im Testcontainer.
 
 ```bash
 mkdir -p tmp/wsl-gpu-validation

@@ -1,5 +1,0 @@
-HIP devices: 1
-GPU: AMD Radeon RX 9070 XT; architecture: gfx1201; VRAM: 16974905344 bytes
-Allocated 3 MiB; copying input to GPU.
-Launching GPU kernel.
-PASS: all 262144 GPU results match the CPU reference.

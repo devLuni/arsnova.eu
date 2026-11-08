@@ -16,7 +16,7 @@ Vorab definierte Bewertung je unterschiedlicher Rohantwort: (a) Anzahl der zwei 
 
 ## 2 · Umgebung und Vergleich
 
-Anwendungsexport vom 6. November 2026, Commit `1d71bd9583954d5304e3d56ee2cc716196190a65`. Lokales Qwen3-4B-Instruct-2507 Q4_K_M auf der RX 9070 XT im geprüften WSL-Container. Der vorhandene [Startprozess](../version_comparison/server.py) kontrolliert den Modelldigest und 37/37 GPU-Schichten. Ein Slot, 8.192 Kontexttoken, Temperatur 0, Seed 456, höchstens 1.024 Ausgabetoken. Die Laufzeit wendet für beide Arme dieselbe JSON-Grammatik an; nur die erlaubten Quellen-IDs folgen den tatsächlich gezeigten Texten.
+Anwendungsexport vom 6. November 2026, Commit `1d71bd9583954d5304e3d56ee2cc716196190a65`. Lokales Qwen3-4B-Instruct-2507 Q4_K_M auf der RX 9070 XT im geprüften WSL-Container. Der vorhandene [Startprozess](../messreihe/server.py) kontrolliert den Modelldigest und 37/37 GPU-Schichten. Ein Slot, 8.192 Kontexttoken, Temperatur 0, Seed 456, höchstens 1.024 Ausgabetoken. Die Laufzeit wendet für beide Arme dieselbe JSON-Grammatik an; nur die erlaubten Quellen-IDs folgen den tatsächlich gezeigten Texten.
 
 - **Auswahl**: Alle zwölf Einträge werden als aktiver, stimmloser Q&A-Snapshot validiert. Der unveränderte November-Packer wählt daraus wie in der bisherigen B-Bedingung. Qwen erhält nur die ausgewählten Texte mit ihren IDs.
 - **Alle**: Qwen erhält direkt alle zwölf Texte und IDs aus derselben Datei in Dateireihenfolge. Es erfolgt keine Priorisierung, Klassifizierung oder Kürzung. Im Auswahlarm bleibt die vom Packer gelieferte Reihenfolge erhalten. Geprüft wird, dass die gemeinsamen Texte und ihre relative Reihenfolge übereinstimmen.

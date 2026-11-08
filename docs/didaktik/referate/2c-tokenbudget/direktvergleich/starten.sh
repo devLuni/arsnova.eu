@@ -9,12 +9,12 @@ gpu_image=sha256:c66e63f53dc546974dbeeca01a025d53eb24aaa35dc0fb405d596f3d5a36ab7
 case ${1:-} in pack|measure) ;; *) echo 'Aufruf: starten.sh pack|measure NEUES_ERGEBNISVERZEICHNIS' >&2; exit 2;; esac
 out=$(realpath -m "${2:?Neues Ergebnisverzeichnis angeben}")
 test -x "$src/.study-node/node"
-study="$here/../version_comparison"
+study="$here/../messreihe"
 for f in apps/backend/src/lib/{moderationSummaryContext,moderationPromptContextPacking,qaSummaryQuality,openWeightLlmClient}.ts libs/shared-types/src/{moderation-prompt-context-fixtures,moderation-prompt-context,open-weight-llm,qa-summary-v2}.ts package-lock.json docker/open-weight-llm/model-manifest.json; do
   git -C "$repo" show "$sha:$f" | cmp - "$src/$f"
 done
-# Fixierte Request-Vorlage und unveränderter historischer Serverstarter.
-(cd "$here/.." && sha256sum --quiet -c version_comparison/SHA256SUMS)
+# Fixierte Request-Vorlage und Serverstarter für die lokale Inferenz.
+(cd "$here/.." && sha256sum --quiet -c messreihe/SHA256SUMS)
 mkdir "$out"
 args=(--rm --network none --user "$(id -u):$(id -g)" --cpus 4 --memory 8g --memory-swap 8g
       --pids-limit 256 --cap-drop ALL --security-opt no-new-privileges

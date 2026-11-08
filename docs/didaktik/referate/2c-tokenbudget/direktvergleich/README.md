@@ -23,7 +23,7 @@ python3 direktvergleich/auswerten.py direktvergleich/rohdaten "$ziel/tabellen" \
 diff -ru direktvergleich/tabellen "$ziel/tabellen"
 ```
 
-Für neue Messungen auf demselben WSL-Rechner den vorbereiteten November-Export und das vorhandene GPU-Testverzeichnis verwenden. [Gemeinsame Einrichtung](../README.md#messungen-wiederholen). Zur Ersteinrichtung siehe [November-Versuch](../version_comparison/versuch.sh) und [GPU-Kompatibilitätsbericht](../testfaelle/gpu-kompatibilitaet/anleitung.md). Der Starter beziffert die Release-Revision und prüft die verwendeten Quelldateien. `pack` läuft ohne GPU. `measure` erstellt beide Requests erneut und benötigt den lokalen Modellserver, das Modell und Docker mit GPU-Zugriff. Beide Aufrufe verlangen einen neuen Zielordner und der Container läuft ohne externes Netz.
+Für neue Messungen auf demselben WSL-Rechner den vorbereiteten November-Export und das vorhandene GPU-Testverzeichnis verwenden. [Gemeinsame Einrichtung](../README.md#messungen-wiederholen). Zur Ersteinrichtung siehe [November-Versuch](../messreihe/versuch.sh) und [GPU-Einrichtung](../gpu-einrichten.md). Der Starter beziffert die Release-Revision und prüft die verwendeten Quelldateien. `pack` läuft ohne GPU. `measure` erstellt beide Requests erneut und benötigt den lokalen Modellserver, das Modell und Docker mit GPU-Zugriff. Beide Aufrufe verlangen einen neuen Zielordner und der Container läuft ohne externes Netz.
 
 ```bash
 # GPU_DIR und STUDY_WORK zuvor gemäß der verlinkten Einrichtung setzen.
@@ -34,3 +34,5 @@ python3 direktvergleich/auswerten.py "$ziel/messung" "$ziel/tabellen"
 ```
 
 Bei abweichendem Wortlaut die neuen Aussagen anhand des [Studienplans](versuchsplan.md) erneut beurteilen. Mit `--bewertung` akzeptiert die Auswertung die archivierten Urteile nur bei identischen Rohtexten.
+
+Die Datei `rohdaten/design-sha256.json` enthält die Hashes der beim Lauf verwendeten Skripte. Die heutige Ablage verwendet andere Verzeichnispfade im Startskript und im Versuchsplan. Die archivierten Eingaben und Modellantworten behalten ihre ursprünglichen Hashes.

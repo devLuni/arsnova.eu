@@ -1,4 +1,4 @@
-/** 2C – Vergleich des Anwendungsstands vom 6. November mit archivierten Eingaben. */
+/** 2C – Lokale Q&A-Kurzfassungen mit kontrolliertem Kontext und Ausgabelimit. */
 import { it, expect } from 'vitest';
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
@@ -27,11 +27,7 @@ type Case = 'S6' | 'S100' | 'long100' | 'meta6';
 const scenarios: Case[] = ['long100', 'meta6'];
 function fixture(key: Case) {
   const n = key === 'S6' || key === 'meta6' ? 6 : 100;
-  const archive = readFileSync('/historisch/messarchiv.jsonl', 'utf8')
-    .trim()
-    .split('\n')
-    .map((line) => JSON.parse(line));
-  const f = archive.find((row) => row.file === 'fixture-' + n + '.json').data;
+  const f = JSON.parse(readFileSync('/study/eingaben/S' + n + '.json', 'utf8'));
   const questions = f.context.sources.filter((s: any) => s.kind === 'qa-question');
   if (key === 'long100') {
     for (const q of questions)

@@ -1,19 +1,15 @@
 # Folgeversuch · 1.024 statt 640 Ausgabetoken
 
-Für jeden Softwarestand nimmt dieser Versuch die gleichen vier Eingaben wie der [640er-Versuch](../kontext-640/anleitung.md). Nur die Ausgabegrenze steigt von 640 auf 1.024. So lässt sich prüfen, ob mehr Platz ein abgebrochenes JSON vervollständigt und wie sich die Laufzeit ändert.
+Hat eine Antwort zu wenig Platz, kann das strukturierte JSON mitten im Text enden. Wir prüfen, ob ein höheres Limit die Ausgabe oder die Laufzeit verändert.
 
-Im Oktober erzeugt ein Skript die Testdatei aus den archivierten 640er-Requests. Im November verwendet der Test dieselbe Kontextaufbereitung und ändert das Limit im Request. Die Auswahl behält ihre ursprüngliche Reserve. Pro Stand folgen auf zwei Warm-ups 20 Messläufe. Der Paarvergleich ordnet sie nach Datensatz, A/B und Wiederholung zu.
+1. Dieselben zwei Datensätze und dieselben zwei Eingabevarianten wie im [640er-Test](../kontext-640/anleitung.md) vorbereiten. Die Quellenreserve bei der Auswahl bleibt gleich.
+2. Ausschließlich das Ausgabelimit der Modellanfrage auf 1.024 erhöhen. Nach zwei Warm-ups folgen fünf Wiederholungen je Bedingung.
+3. Nach Datensatz, Eingabe und Wiederholung paaren. Rohtext, Hostausgabe, verbrauchte Token und Zeit vom Packen bis zur geprüften Ausgabe vergleichen.
 
-Die Befehle laufen aus dem Studienverzeichnis nach der [gemeinsamen Einrichtung](../../README.md#messungen-wiederholen). Der erzeugte Oktober-Runner muss im Git-Worktree liegen. Dafür wird hier das vorbereitete Verzeichnis `$arbeit` verwendet.
+Nach der [Einrichtung](../../README.md#messungen-wiederholen) im Studienverzeichnis ausführen:
 
 ```bash
-# Oktober
-python3 ausgabelimit-1024/1024-token-test-vorbereiten.py "$arbeit/harness"
-OUT="$arbeit/1024" bash "$arbeit/harness/qa-tests-ausfuehren.sh" measure
-# November
-bash version_comparison/versuch.sh measure 1024
+bash messreihe/versuch.sh measure 1024
 ```
 
-[Oktober-Runner erzeugen](../../ausgabelimit-1024/1024-token-test-vorbereiten.py) · [Läufe paarweise vergleichen](../../ausgabelimit-1024/ausgabelimits-vergleichen.py) · [November-Test](../../version_comparison/qa-stichtag.test.ts)
-
-[Alle Ergebnisse dieses Testfalls](ergebnisse.md) · [Übersicht und Einrichtung](../../README.md)
+[Testcode](../../messreihe/qa-kurzfassung.test.ts) · [Ergebnisse aller Läufe](ergebnisse.md)

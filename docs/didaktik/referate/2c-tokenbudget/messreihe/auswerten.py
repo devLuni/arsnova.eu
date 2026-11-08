@@ -21,7 +21,7 @@ def sha(value):
 
 
 def archive_path(series):
-    folder = 'extended_experiments' if series == 'erweitert' else 'version_comparison'
+    folder = 'extended_experiments' if series == 'erweitert' else 'messreihe'
     return study / folder / f'rohdaten-{series}.jsonl'
 
 
@@ -65,19 +65,19 @@ def write_csv(dest, name, rows):
 def evaluate(dest):
     dest.mkdir(parents=True, exist_ok=True)
     raw = {s:load(archive_path(s)) for s in series_names}
-    original = load(study/'messdaten-640/messarchiv.jsonl')
-    old_large = load(study/'ausgabelimit-1024/messarchiv.jsonl')
+    selected_model = json.loads((study.parents[3] / 'docker/open-weight-llm/model-manifest.json').read_text())
+    reference_server = raw['640']['environment.json']['serverSha']
     audit = json.loads((study/'extended_experiments/pruefstufen.json').read_text())
     ratings = json.loads((study/'extended_experiments/inhaltsbewertung.json').read_text())
-    rows, cases, comparisons = [], [], []
+    rows, cases = [], []
     for series, files in raw.items():
         run_ids = {Path(name).stem for name in files if re.fullmatch(r'\w+-[PR]\d+-\w+-[AB]\.json', name)}
-        # Die historische Teilserie enthält nur Messläufe. Neue Serien archivieren beide Warm-ups.
+        # Das Teilarchiv der Zusatzversuche enthält nur die gewerteten Läufe.
         include_warmups = series != 'erweitert' or any('-P0-' in run for run in run_ids)
         assert run_ids == expected_run_ids(series, include_warmups)
         env = files['environment.json']
-        assert env['release'] == app_sha and env['model']['sha256'] == original['environment.json']['model']['sha256']
-        assert env['serverSha'] == original['environment.json']['serverSha']
+        assert env['release'] == app_sha and env['model']['sha256'] == selected_model['sha256']
+        assert env['serverSha'] == reference_server
         assert files['image-id.txt'] == 'sha256:c66e63f53dc546974dbeeca01a025d53eb24aaa35dc0fb405d596f3d5a36ab79'
         for name, r in files.items():
             if not re.fullmatch(r'\w+-[PR]\d+-\w+-[AB]\.json',name):
@@ -88,7 +88,7 @@ def evaluate(dest):
             fixture = files[f'fixture-{key}.json']
             assert sha(encode(fixture,sorted_keys=True)) == r['fixtureSha256']
             if series != 'erweitert':
-                assert fixture == original[f'fixture-{r["n"]}.json']
+                assert fixture == json.loads((study / "messreihe/eingaben" / f"{key}.json").read_text())
             req = files[f'request-{key}-{arm}.json']
             assert sha(encode(req)) == r['wireSha256']
             packed = files[f'context-{key}-A.json']
@@ -156,19 +156,7 @@ def evaluate(dest):
                     'truncated_ids': '|'.join(truncated),
                     'estimated_input': packed['budget']['packedInputTokens'],
                 })
-            if series != 'erweitert' and r['rep']:
-                old = (original if series=='640' else old_large)['-'.join(run.split('-')[1:])+'.json']
-                comparisons.append({
-                    'run': run,
-                    'old_mode': old['execution']['effectiveMode'],
-                    'new_mode': validation['actualMode'],
-                    'old_tokens': old['usage']['completion_tokens'],
-                    'new_tokens': r['usage']['completion_tokens'],
-                    'old_ms': round(old['componentMs'], 3),
-                    'new_ms': round(r['componentMs'], 3),
-                    'delta_ms': round(r['componentMs'] - old['componentMs'], 3),
-                })
-    assert len(comparisons) == 40 and set(audit) == {row['run'] for row in rows}
+    assert set(audit) == {row['run'] for row in rows}
     for key in ('S6','S100'):
         for arm in 'AB':
             f=f'request-{key}-{arm}.json'
@@ -176,7 +164,19 @@ def evaluate(dest):
             assert low.pop('max_tokens')==640 and high.pop('max_tokens')==1024 and low==high
     write_csv(dest,'einzelwerte.csv',rows)
     write_csv(dest,'fragenauswahl.csv',cases)
-    write_csv(dest,'versionspaare.csv',comparisons)
+    pairs = []
+    for row in rows:
+        if row['series'] != '640' or not row['rep']:
+            continue
+        suffix = row['run'].removeprefix('640-')
+        lower = raw['640'][f'640-{suffix}.json']
+        higher = raw['1024'][f'1024-{suffix}.json']
+        pairs.append({
+            'paar': suffix,
+            'rohtext_identisch': lower['rawContent'] == higher['rawContent'],
+            'differenz_ms_1024_minus_640': round(higher['componentMs'] - lower['componentMs'], 3),
+        })
+    write_csv(dest, 'budgetpaare.csv', pairs)
     summary=[]
     for series,key,arm in sorted({(r['series'],r['scenario'],r['arm']) for r in rows}):
         g=[r for r in rows if (r['series'],r['scenario'],r['arm'])==(series,key,arm) and r['rep']]

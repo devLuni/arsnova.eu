@@ -1,6 +1,6 @@
 # Ergebnisse · Stimmen und Status als zusätzliche Eingabe
 
-## November-Baseline · 8. November 2026
+## Messung vom 8. November 2026
 
 Mit Stimmen und Status stieg die Eingabe B von 296 auf 440 Token. Aus »Verpflichtende Anwesenheit ist nicht spezifiziert.« wurde »Verpflichtende Anwesenheit ist umstritten.« Das passt zu 40 positiven und 40 negativen Stimmen. Die sichtbare Ersatzfassung blieb gleich. Die Antwort schrumpfte von 289 auf 245 Token, die mediane Komponentenzeit sank von 3,430 auf 2,990 s. Der Test trennt den Beitrag der beiden Zusatzfelder nicht.
 
