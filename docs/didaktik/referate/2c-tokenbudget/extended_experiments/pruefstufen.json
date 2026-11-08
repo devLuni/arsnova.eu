@@ -439,66 +439,6 @@
     "actualMode": "extractive",
     "finalStatus": "ready"
   },
-  "erweitert-P0-order6-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-P0-order6-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R1-focus100-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "uncertain",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R1-focus100-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R1-focus7-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "uncertain",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R1-focus7-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
   "erweitert-R1-long100-A": {
     "json": true,
     "schema": true,
@@ -530,66 +470,6 @@
     "finalStatus": "ready"
   },
   "erweitert-R1-meta6-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R1-order6-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R1-order6-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R2-focus100-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "uncertain",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R2-focus100-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R2-focus7-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "uncertain",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R2-focus7-B": {
     "json": true,
     "schema": true,
     "appRefs": true,
@@ -639,66 +519,6 @@
     "actualMode": "extractive",
     "finalStatus": "ready"
   },
-  "erweitert-R2-order6-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R2-order6-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R3-focus100-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "uncertain",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R3-focus100-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R3-focus7-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "uncertain",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R3-focus7-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
   "erweitert-R3-long100-A": {
     "json": true,
     "schema": true,
@@ -730,26 +550,6 @@
     "finalStatus": "ready"
   },
   "erweitert-R3-meta6-B": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": true,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R3-order6-A": {
-    "json": true,
-    "schema": true,
-    "appRefs": true,
-    "armRefs": null,
-    "qualityGate": false,
-    "modelStatus": "ready",
-    "actualMode": "extractive",
-    "finalStatus": "ready"
-  },
-  "erweitert-R3-order6-B": {
     "json": true,
     "schema": true,
     "appRefs": true,

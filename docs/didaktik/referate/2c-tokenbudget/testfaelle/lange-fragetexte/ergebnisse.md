@@ -4,7 +4,7 @@
 
 Der erste Packversuch mit acht Textzusätzen überschritt die Grenze von 500 Zeichen bereits vor der Inferenz. Mit fünf Zusätzen lief der Test vollständig. Gegenüber S100 übergab der Packer acht gekürzte statt zehn kurzer Texte. In einigen sichtbaren Ersatztexten fehlen sogar Wortenden. In A stieg die mediane Dauer von 7,284 auf 7,621 s, in B sank sie von 6,707 auf 6,445 s. Zahl der Texte und Länge der Antwort änderten sich mit. [Protokoll beider Packversuche](../../version_comparison/pruefprotokoll.txt)
 
-Alle 6 gewerteten Antworten waren vollständiges JSON mit erlaubten IDs. Der Formfilter lehnte alle ab. Der Host erhielt jeweils einen extraktiven Ersatz (4/10 Rubrikpunkte). Die beiden gemeinsamen Warm-ups stehen beim [Reihenfolgetest](../eingabereihenfolge/ergebnisse.md). A enthält die Registerdaten. B enthält die Fragetexte und IDs. Die Zeit reicht vom Packen bis zur geprüften Ausgabe.
+Alle 6 gewerteten Antworten waren vollständiges JSON mit erlaubten IDs. Der Formfilter lehnte alle ab. Der Host erhielt jeweils einen extraktiven Ersatz (4/10 Rubrikpunkte). A enthält die Registerdaten. B enthält die Fragetexte und IDs. Die Zeit reicht vom Packen bis zur geprüften Ausgabe.
 
 | Lauf-ID                | Eingabetoken | Ausgabetoken | Erstes Textfragment (ms) | Komponentenzeit (s) | Vollständiges JSON | Hostausgabe |
 | ---------------------- | ------------ | ------------ | ------------------------ | ------------------- | ------------------ | ----------- |

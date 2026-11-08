@@ -4,7 +4,7 @@
 
 Mit Stimmen und Status stieg die Eingabe B von 296 auf 440 Token. Aus »Verpflichtende Anwesenheit ist nicht spezifiziert.« wurde »Verpflichtende Anwesenheit ist umstritten.« Das passt zu 40 positiven und 40 negativen Stimmen. Die sichtbare Ersatzfassung blieb gleich. Die Antwort schrumpfte von 289 auf 245 Token, die mediane Komponentenzeit sank von 3,430 auf 2,990 s. Der Test trennt den Beitrag der beiden Zusatzfelder nicht.
 
-Alle 6 gewerteten Antworten waren vollständiges JSON mit erlaubten IDs. Der Formfilter lehnte alle ab. Der Host erhielt jeweils einen extraktiven Ersatz (4/10 Rubrikpunkte). Die beiden gemeinsamen Warm-ups stehen beim [Reihenfolgetest](../eingabereihenfolge/ergebnisse.md). A enthält die Registerdaten. B enthält die Fragetexte und IDs sowie Status und Stimmen. Die Zeit reicht vom Packen bis zur geprüften Ausgabe.
+Alle 6 gewerteten Antworten waren vollständiges JSON mit erlaubten IDs. Der Formfilter lehnte alle ab. Der Host erhielt jeweils einen extraktiven Ersatz (4/10 Rubrikpunkte). A enthält die Registerdaten. B enthält die Fragetexte und IDs sowie Status und Stimmen. Die Zeit reicht vom Packen bis zur geprüften Ausgabe.
 
 | Lauf-ID              | Eingabetoken | Ausgabetoken | Erstes Textfragment (ms) | Komponentenzeit (s) | Vollständiges JSON | Hostausgabe |
 | -------------------- | ------------ | ------------ | ------------------------ | ------------------- | ------------------ | ----------- |

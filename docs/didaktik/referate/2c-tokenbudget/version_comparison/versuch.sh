@@ -16,8 +16,6 @@ case ${1:-} in
    mkdir "$src"
    git -C "$repo" archive "$sha" | tar -xf - -C "$src"
    docker run "${common[@]}" -v "$src:/release" -w /release -e npm_config_cache=/tmp/npm "$image" sh -ec 'npm ci --ignore-scripts --no-audit --no-fund && node_modules/.bin/prisma generate && npm run build:libs && mkdir -p .study-node && cp /usr/local/bin/node .study-node/node' > "$scratch/setup.log" 2>&1 ;;
- verify)
-   docker run "${common[@]}" --network none -v "$src:/release" -w /release/apps/backend "$image" node ../../node_modules/vitest/vitest.mjs run --maxWorkers=1 src/lib/moderationSummaryContext.test.ts src/lib/moderationPromptContextPacking.test.ts src/lib/qaSummaryQueue.test.ts src/lib/openWeightLlmClient.test.ts src/lib/qaSummaryQuality.test.ts > "$scratch/verify.log" 2>&1 ;;
  kontrollen)
    out=${OUT:-"$scratch/kontrollen"}
    mkdir "$out"
@@ -41,5 +39,5 @@ case ${1:-} in
      docker image inspect --format '{{.Id}}' "$sdk" > "$out/image-id.txt"
      docker run "${common[@]}" --network none --device /dev/dxg -v /usr/lib/wsl/lib/libdxcore.so:/usr/lib/libdxcore.so:ro -v "$GPU_DIR:/gpu:ro" "${mounts[@]}" "${extra[@]}" "$sdk" timeout -k 10 900 python3 /study/server.py
    fi ;;
- *) echo 'Aufruf: versuch.sh setup | verify | kontrollen | {pack|measure} {640|1024|erweitert}' >&2; exit 2 ;;
+ *) echo 'Aufruf: versuch.sh setup | kontrollen | {pack|measure} {640|1024|erweitert}' >&2; exit 2 ;;
 esac

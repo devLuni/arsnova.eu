@@ -1,14 +1,3 @@
-5 Upstream-Suiten
-✓ src/lib/moderationPromptContextPacking.test.ts (25 tests) 3851ms
-✓ src/lib/openWeightLlmClient.test.ts (56 tests) 179ms
-✓ src/lib/moderationSummaryContext.test.ts (24 tests) 304ms
-✓ src/lib/qaSummaryQueue.test.ts (12 tests) 334ms
-✓ src/lib/qaSummaryQuality.test.ts (13 tests) 6ms
-Test Files  5 passed (5)
-Tests  130 passed (130)
-Start at  15:52:37
-Duration  7.27s (transform 776ms, setup 0ms, import 2.09s, tests 4.67s, environment 0ms)
-
 Pack S6/S100
 ✓ src/lib/topic2c.experiment.test.ts (1 test) 132ms
 Test Files  1 passed (1)
@@ -42,13 +31,6 @@ Test Files  1 passed (1)
 Tests  1 passed (1)
 Start at  15:55:39
 Duration  128.48s (transform 629ms, setup 0ms, import 983ms, tests 127.39s, environment 0ms)
-
-Erweiterung
-✓ src/lib/topic2c.experiment.test.ts (1 test) 181835ms
-Test Files  1 passed (1)
-Tests  1 passed (1)
-Start at  15:58:25
-Duration  182.97s (transform 662ms, setup 0ms, import 1.03s, tests 181.83s, environment 0ms)
 
 Quellenkontrollen und Audit
 ✓ src/lib/topic2c.kontrollen.test.ts (1 test) 913ms

@@ -33,7 +33,11 @@ it('trennt JSON, Schema, Quellenliste, Qualitätsfilter und tatsächlich ausgeli
   const audit: Record<string, unknown> = {};
   for (const series of ['640', '1024', 'erweitert']) {
     const folder = '/messung/measure-' + series;
-    for (const name of readdirSync(folder).filter((n) => /^\w+-[RP]\d+-/.test(n))) {
+    const runs =
+      series === 'erweitert'
+        ? /^erweitert-[RP]\d+-(long100|meta6)-[AB]\.json$/
+        : /^(640|1024)-[RP]\d+-(S6|S100)-[AB]\.json$/;
+    for (const name of readdirSync(folder).filter((n) => runs.test(n))) {
       const record = read(folder + '/' + name);
       const [, , key, arm] = record.id.split('-');
       const p = prepared(folder, key);

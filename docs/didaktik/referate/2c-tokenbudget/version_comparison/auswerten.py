@@ -25,14 +25,25 @@ def archive_path(series):
     return study / folder / f'rohdaten-{series}.jsonl'
 
 
+def expected_run_ids(series, include_warmups=True):
+    extended = series == 'erweitert'
+    cases = ('long100', 'meta6') if extended else ('S6', 'S100')
+    repetitions = 3 if extended else 5
+    runs = {f'{series}-R{rep}-{case}-{arm}' for rep in range(1, repetitions + 1)
+            for case in cases for arm in ('A', 'B')}
+    if include_warmups:
+        pilot_case = 'meta6' if extended else 'S100'
+        runs.update(f'{series}-P0-{pilot_case}-{arm}' for arm in ('A', 'B'))
+    return runs
+
+
 def collect(scratch):
     for series in series_names:
         dest = archive_path(series)
         directory = scratch / ('measure-' + series)
-        expected = 32 if series == 'erweitert' else 22
-        reports = list(directory.glob(f'{series}-[RP]*.json'))
-        if len(reports) != expected:
-            raise ValueError(f'{series}: {len(reports)}/{expected} Aufträge')
+        reports = {path.stem for path in directory.glob(f'{series}-[RP]*.json')}
+        if reports != expected_run_ids(series):
+            raise ValueError(f'{series}: fehlende oder unerwartete Aufträge')
         with dest.open('x') as out:
             for path in sorted(directory.glob('*.json')):
                 out.write(encode({'file': path.name, 'data': json.loads(path.read_text())})+'\n')
@@ -60,6 +71,10 @@ def evaluate(dest):
     ratings = json.loads((study/'extended_experiments/inhaltsbewertung.json').read_text())
     rows, cases, comparisons = [], [], []
     for series, files in raw.items():
+        run_ids = {Path(name).stem for name in files if re.fullmatch(r'\w+-[PR]\d+-\w+-[AB]\.json', name)}
+        # Die historische Teilserie enthält nur Messläufe. Neue Serien archivieren beide Warm-ups.
+        include_warmups = series != 'erweitert' or any('-P0-' in run for run in run_ids)
+        assert run_ids == expected_run_ids(series, include_warmups)
         env = files['environment.json']
         assert env['release'] == app_sha and env['model']['sha256'] == original['environment.json']['model']['sha256']
         assert env['serverSha'] == original['environment.json']['serverSha']
@@ -68,6 +83,7 @@ def evaluate(dest):
             if not re.fullmatch(r'\w+-[PR]\d+-\w+-[AB]\.json',name):
                 continue
             run = r['id']
+            assert name == run + '.json'
             _, _, key, arm = run.split('-')
             fixture = files[f'fixture-{key}.json']
             assert sha(encode(fixture,sorted_keys=True)) == r['fixtureSha256']
@@ -116,8 +132,6 @@ def evaluate(dest):
                 'decode_ms': r['timings']['predicted_ms'],
                 'component_ms': round(r['componentMs'], 3),
                 'cgroup_MiB': round(int(r['cgroupBytes']) / 2 ** 20, 2),
-                'subtitle_raw': 'untertitel' in r['rawContent'].lower(),
-                'subtitle_final': 'untertitel' in encode(visible).lower(),
                 'raw_sha': sha(r['rawContent']),
                 'visible_sha': visible_hash,
                 'D1': d1,
@@ -141,7 +155,6 @@ def evaluate(dest):
                     'omitted_ids': '|'.join(omitted),
                     'truncated_ids': '|'.join(truncated),
                     'estimated_input': packed['budget']['packedInputTokens'],
-                    'focus_in_input': any(('Untertitel' in q['text'] for q in texts)),
                 })
             if series != 'erweitert' and r['rep']:
                 old = (original if series=='640' else old_large)['-'.join(run.split('-')[1:])+'.json']
@@ -155,7 +168,7 @@ def evaluate(dest):
                     'new_ms': round(r['componentMs'], 3),
                     'delta_ms': round(r['componentMs'] - old['componentMs'], 3),
                 })
-    assert len(rows)==76 and len(comparisons)==40 and len(audit)==76
+    assert len(comparisons) == 40 and set(audit) == {row['run'] for row in rows}
     for key in ('S6','S100'):
         for arm in 'AB':
             f=f'request-{key}-{arm}.json'

@@ -4,7 +4,7 @@ Pro Softwarestand gab es zwei Warm-ups (P0) und 20 gewertete Läufe (R1–R5). A
 
 ## Oktober-Baseline · v1.3.0 vom 8. Oktober, gemessen am 4. November
 
-Alle 20 Modellantworten erreichten die Grenze von 640 Token mitten im JSON. Der Host erhielt jedes Mal denselben extraktiven Ersatz (4/10 Rubrikpunkte). Vor der Serie scheiterte ein Serverstart an einer fehlenden Bibliothek. Dabei entstand keine Modellantwort. [Startprotokoll](../../messdaten-640/backend-und-gpu-pruefungen.txt) In S6 und S100 sah Qwen jeweils drei Fragetexte.
+Alle 20 Modellantworten erreichten die Grenze von 640 Token mitten im JSON. Der Host erhielt jedes Mal denselben extraktiven Ersatz (4/10 Rubrikpunkte). Vor der Serie scheiterte ein Serverstart an einer fehlenden Bibliothek. Dabei entstand keine Modellantwort. [Startprotokoll](../../messdaten-640/gpu-pruefungen.txt) In S6 und S100 sah Qwen jeweils drei Fragetexte.
 
 | Datensatz | Eingabe | Eingabetoken | Ausgabetoken | Dauer (Median) |
 | --------- | ------- | ------------ | ------------ | -------------- |

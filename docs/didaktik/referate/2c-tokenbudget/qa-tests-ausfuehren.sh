@@ -15,7 +15,7 @@ case "${1:-}" in
  setup)
   if [[ -e "$src/package.json" ]]; then echo 'Use a fresh scratch directory for setup.' >&2; exit 2; fi
   git -C "$repo" archive "$release" | tar -x -C "$src"
-  docker run "${common[@]}" -v "$src:/release" -w /release -e npm_config_cache=/tmp/npm "$node_image" sh -ec 'npm ci --ignore-scripts --no-audit --no-fund && node_modules/.bin/prisma generate && npm run test -w @arsnova/backend -- --maxWorkers=1 src/lib/moderationSummaryContext.test.ts src/lib/moderationPromptContextPacking.test.ts src/lib/qaSummaryQueue.test.ts src/lib/openWeightLlmClient.test.ts' > "$out/baseline.log" 2>&1 ;;
+  docker run "${common[@]}" -v "$src:/release" -w /release -e npm_config_cache=/tmp/npm "$node_image" sh -ec 'npm ci --ignore-scripts --no-audit --no-fund && node_modules/.bin/prisma generate && npm run build:libs' > "$out/setup.log" 2>&1 ;;
  pack)
   docker run "${common[@]}" --network none "${mounts[@]}" -e ONLY_PACK=1 "$node_image" sh -ec 'mkdir -p /release/.study-node && cp /usr/local/bin/node /release/.study-node/node && node ../../node_modules/vitest/vitest.mjs run --maxWorkers=1 src/lib/topic2c.experiment.test.ts' ;;
  measure)

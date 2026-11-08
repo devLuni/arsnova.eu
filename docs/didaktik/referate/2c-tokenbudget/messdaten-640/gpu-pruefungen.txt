@@ -1,11 +1,3 @@
-Baseline v1.3.0; Auszug aus dem lokalen Vitest-Lauf:
- ✓ src/lib/moderationPromptContextPacking.test.ts (22 tests) 3948ms
- ✓ src/lib/openWeightLlmClient.test.ts (47 tests) 153ms
- ✓ src/lib/qaSummaryQueue.test.ts (12 tests) 261ms
- ✓ src/lib/moderationSummaryContext.test.ts (9 tests) 63ms
- Test Files  4 passed (4)
-      Tests  90 passed (90)
-
 GPU-Protokoll, abschließender Versuch:
 0.00.664.343 I llama_prepare_model_devices: using device ROCm0 (AMD Radeon RX 9070 XT) (0000:2f:00.0) - 14965 MiB free
 0.00.828.562 I load_tensors: offloaded 37/37 layers to GPU

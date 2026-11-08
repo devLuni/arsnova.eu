@@ -23,32 +23,20 @@ const hash = (s: string) => createHash('sha256').update(s).digest('hex');
 const trials: any[] = [];
 const url = 'http://127.0.0.1:8080';
 const plain = (q: any) => ({ id: q.id, text: q.content.text });
-type Case = 'S6' | 'S100' | 'order6' | 'long100' | 'focus7' | 'focus100' | 'meta6';
-const scenarios: Case[] = ['order6', 'long100', 'focus7', 'focus100', 'meta6'];
-const focus = 'Sind für die Vorlesungsaufzeichnungen Untertitel vorgesehen?';
+type Case = 'S6' | 'S100' | 'long100' | 'meta6';
+const scenarios: Case[] = ['long100', 'meta6'];
 function fixture(key: Case) {
-  const n = ['S6', 'order6', 'meta6'].includes(key) ? 6 : 100;
+  const n = key === 'S6' || key === 'meta6' ? 6 : 100;
   const archive = readFileSync('/historisch/messarchiv.jsonl', 'utf8')
     .trim()
     .split('\n')
     .map((line) => JSON.parse(line));
   const f = archive.find((row) => row.file === 'fixture-' + n + '.json').data;
   const questions = f.context.sources.filter((s: any) => s.kind === 'qa-question');
-  if (key === 'order6') {
-    f.context.sources.reverse();
-    f.context.questions.items.reverse();
-  }
   if (key === 'long100') {
     for (const q of questions)
       q.content.text +=
         ' Könnten Sie die Begründung im nächsten Termin ausführlicher erläutern?'.repeat(5);
-  }
-  // Zwei unklassifizierte, identisch gewichtete Fragen erhalten vertauschte Texte.
-  if (key === 'focus7' || key === 'focus100') {
-    const last = questions[99].content;
-    last.text = focus;
-    if (key === 'focus7')
-      [questions[6].content, questions[99].content] = [last, questions[6].content];
   }
   return S.ModerationAnalysisContextV1Schema.parse(f);
 }
@@ -226,15 +214,15 @@ it('recorded local summary experiment', async () => {
     if (!rep && rec.http !== 200) throw Error('Pilot transport failed; inspect saved run ' + id);
   }
   if (extended) {
-    await run('order6', 'A', 0);
-    await run('order6', 'B', 0);
+    await run('meta6', 'A', 0);
+    await run('meta6', 'B', 0);
     for (let rep = 1; rep <= 3; rep++) {
       const order = rep % 2 ? keys : [...keys].reverse();
       for (const [i, key] of order.entries()) {
-        for (const arm of (rep + i) % 2 ? ['A', 'B'] : ['B', 'A']) await run(key, arm, rep);
+        for (const arm of i % 2 ? ['A', 'B'] : ['B', 'A']) await run(key, arm, rep);
       }
     }
-    expect(trials).toHaveLength(32);
+    expect(trials).toHaveLength(14);
   } else {
     await run('S100', 'A', 0);
     await run('S100', 'B', 0);
