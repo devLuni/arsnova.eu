@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "scope": "synthetic runtime compatibility only",
+  "startup_seconds": 4.770661634000135,
+  "request_seconds": 1.3178092750003998,
+  "output": {
+    "statements": [
+      {
+        "text": "Wie berechnet man die Steigung einer Geraden? Was bedeutet die Steigung m in y = mx + b?",
+        "sourceIds": [
+          "q1",
+          "q2"
+        ]
+      },
+      {
+        "text": "Wann ist eine Matrix invertierbar?",
+        "sourceIds": [
+          "q3"
+        ]
+      }
+    ]
+  },
+  "usage": {
+    "completion_tokens": 85,
+    "prompt_tokens": 173,
+    "total_tokens": 258,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 173,
+    "prompt_ms": 103.78,
+    "prompt_per_token_ms": 0.5998843930635839,
+    "prompt_per_second": 1666.9878589323569,
+    "predicted_n": 85,
+    "predicted_ms": 1206.333,
+    "predicted_per_token_ms": 14.361107142857144,
+    "predicted_per_second": 69.6325144052264
+  },
+  "gpu_layers": 37,
+  "total_layers": 37,
+  "server_max_rss_kib": 2823364,
+  "total_seconds": 6.253200466000635
+}
