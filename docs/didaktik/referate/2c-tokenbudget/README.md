@@ -14,6 +14,12 @@ Kann eine Lehrperson aus der Kurzfassung erkennen, was Studierende fragen und wa
 
 Insgesamt liegen **60 gewertete Modellaufrufe** und **sechs separat archivierte Warm-ups** vor. Die Prüfung der Quellen und die Auswertung der Fragenauswahl erzeugen keine weiteren Modellantworten. Die Hauptversuche messen von der Kontextaufbereitung bis zur geprüften Ausgabe für den Host. Der Direktvergleich misst nur die Modellanfrage und bewertet ihren Rohtext. [Messplan](messreihe/methodik.md) · [Direktvergleich](direktvergleich/versuchsplan.md)
 
+### Inhaltliche Bewertung der Modellantworten
+
+Die nachträgliche, KI-gestützte Auswertung vergleicht Qwens Aussagen und Vorschläge mit der jeweils gesendeten Anfrage. Sie prüft, welche Anliegen Qwen aufgreift, ob es offene Fragen als offen wiedergibt und ob die angeführten Quellen seine Behauptungen stützen. Wiederholungen mit gleichem Wortlaut zählen einmal pro Eingabevariante. Eine unabhängige menschliche Zweitbewertung steht aus. Die [vier Kurzfassungen des Budgetversuchs](testfaelle/kontext-640/ergebnisse.md#inhalt-von-qwens-kurzfassungen) gelten für beide Ausgabelimits. Die ergänzenden Ergebnisse stehen bei [langen Fragen](testfaelle/lange-fragetexte/ergebnisse.md#inhalt-von-qwens-kurzfassungen), [Stimmen und Status](testfaelle/stimmen-und-status/ergebnisse.md#inhalt-von-qwens-kurzfassungen) und im [Direktvergleich](direktvergleich/ergebnisse.md).
+
+Die ursprünglichen Rubrikpunkte in den archivierten CSV-Spalten `D1` bis `D5`, `score`, `score_min` und `score_max` beziehen sich auf die vom Backend bereitgestellte Hostausgabe. Die Inhaltsbewertung der Modellantworten verwendet diese Punkte nicht. [Ursprüngliche Einzelbewertung](extended_experiments/inhaltsbewertung.json) · [Archivierter Messplan, Abschnitt 5](messreihe/methodik.md#5-auswertung)
+
 ## Messungen wiederholen
 
 Die archivierten Daten lassen sich ohne GPU auswerten. Für neue Messungen werden die [lokale GPU-Umgebung](gpu-einrichten.md), Docker und der vorbereitete Modellserver benötigt. Das Setup lädt einmalig die Abhängigkeiten des angegebenen Anwendungsexports. Die Inferenz läuft anschließend im Container ohne externes Netz. Im Stamm des Forschungsworktrees beginnen:

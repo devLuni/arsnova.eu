@@ -4,7 +4,7 @@ Es gab zwei Warm-ups (P0) und 20 gewertete Läufe (R1–R5). A umfasst die ausge
 
 ## Messung vom 8. November 2026
 
-Alle 20 Modellantworten hatten vollständiges JSON und zulässige IDs. Der Formfilter lehnte alle 20 ab. In S6-B fehlte der Aussage »Klausurrelevanz von Kapitel 4 ist unklar.« die geforderte Themenüberschrift. Alle Hosts erhielten einen extraktiven Ersatz (4/10 Rubrikpunkte). Bei S6 enthielt er die Prüfungs- und Anwesenheitsfrage, bei S100 Regressions- und Prüfungsfragen.
+Alle 20 Modellantworten hatten vollständiges JSON und zulässige Quellen-IDs. Der Formfilter lehnte alle 20 ab. In S6-B fehlte etwa eine Themenüberschrift. Für die Inhaltsbewertung ist Qwens generierter Wortlaut maßgeblich.
 
 | Datensatz | Eingabe | Eingabetoken | Ausgabetoken | Dauer (Median) |
 | --------- | ------- | ------------ | ------------ | -------------- |
@@ -15,7 +15,7 @@ Alle 20 Modellantworten hatten vollständiges JSON und zulässige IDs. Der Formf
 
 ### Alle Läufe einschließlich Warm-ups
 
-[Rohantworten, Requests und Hostausgaben](../../messreihe/rohdaten-1024.jsonl) · [Bewertung der Ersatztexte](../../extended_experiments/inhaltsbewertung.json)
+[Rohantworten, Requests und technische Ausgabe je Lauf](../../messreihe/rohdaten-1024.jsonl)
 
 | Lauf-ID        | Eingabetoken | Ausgabetoken | Erstes Textfragment (ms) | Komponentenzeit (s) | Vollständiges JSON | Hostausgabe |
 | -------------- | ------------ | ------------ | ------------------------ | ------------------- | ------------------ | ----------- |
@@ -45,3 +45,5 @@ Alle 20 Modellantworten hatten vollständiges JSON und zulässige IDs. Der Formf
 ### Vergleich der beiden Ausgabelimits
 
 In allen 20 Paaren war der Rohtext bytegleich. Die vier Eingaben benötigten je 289 bis 586 Ausgabetoken und lagen bereits unter 640. Die Komponentenzeit änderte sich im Median der Paardifferenzen um −0,006 s (1.024 minus 640). Die zusätzliche Reserve behob in diesen Fällen keinen Formfehler. [Alle 20 Paare](../../messreihe/tabellen/budgetpaare.csv)
+
+Auch die inhaltlichen Befunde blieben gleich. Bei S6-A fehlte weiterhin die übermittelte Prüfungsfrage. S6-B gab beide Fragen als offen wieder. Bei S100-A blieb der Prüfungsumfang offen, während S100-B die Fragen zu Kapitel 4 fälschlich als Bestätigung der Klausurrelevanz deutete. [Inhaltsbewertung der vier wortgleichen Kurzfassungen](../kontext-640/ergebnisse.md#inhalt-von-qwens-kurzfassungen) · [Rohantworten bei 1.024 Token](../../messreihe/rohdaten-1024.jsonl#L3-L6) · [Zugehörige Anfragen](../../messreihe/rohdaten-1024.jsonl#L30-L33)
